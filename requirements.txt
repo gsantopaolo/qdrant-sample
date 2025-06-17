@@ -1,6 +1,8 @@
 python-dotenv>=1.0.0
 PyPDF2>=3.0.0
 fastembed>=0.1.0
+# for gpu (not apple metal)
+# fastembed-gpu
 qdrant-client>=1.9.0
 sentence-transformers>=2.2.2
 transformers[torch]
