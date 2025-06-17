@@ -1,0 +1,67 @@
+networks:
+  qdrant_net:
+    name: qdrant_net
+
+services:
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    restart: always
+    ports:
+      - "6333:6333"    # HTTP API
+      - "6334:6334"    # gRPC API
+    volumes:
+      - "../data/qdrant/:/qdrant/storage"
+    environment:
+      # HTTP & gRPC ports
+      QDRANT__SERVICE__HTTP_PORT: 6333
+      QDRANT__SERVICE__GRPC_PORT: 6334
+      # Storage path
+      QDRANT__STORAGE__STORAGE_PATH: /qdrant/storage
+      # API key (built-in readiness endpoint uses this)
+      QDRANT__API__KEY: admin
+      # Log level
+      QDRANT__LOGGING__LOG_LEVEL: INFO
+#    healthcheck:
+#      test: [ "CMD-SHELL", "curl -s http://localhost:6333/healthz | grep -q 'healthz check passed%' || exit 1" ]
+#      interval: 20s
+#      timeout: 10s
+#      retries: 5
+#      start_period: 30s
+    networks:
+      - qdrant_net
+
+
+  yugabytedb:
+    container_name: yugabytedb
+    image: yugabytedb/yugabyte:latest
+    ports:
+      - "7000:7000"
+      - "9000:9000"
+      - "15433:15433"
+      - "5433:5433"
+      - "9042:9042"
+    command: [
+      "/home/yugabyte/bin/yugabyted",
+      "start",
+      "--base_dir=/home/yugabyte/yb_data",
+      "--background=false"
+    ]
+    volumes:
+      - "../data/yugabytedb/node1:/root/var/data"
+    restart: unless-stopped
+    environment:
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US:en # Or just en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
+    healthcheck:
+      # test: postgres/bin/pg_isready -h yugabytedb -p 5433 # Original
+      test: ["CMD-SHELL", "/home/yugabyte/postgres/bin/pg_isready -h yugabytedb -p 5433 -U yugabyte || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - qdrant_net
+
