@@ -22,8 +22,6 @@ copy-paste the logic into your own projects or benchmarking harnesses in minutes
 * [Installation](#-installation)
 * [Quick Start](#-quick-start)
 * [Process Overview](#-process-overview)
-* [Human-in-the-Loop Feedback](#-human-in-the-loop-feedback)
-* [Known Issues & Troubleshooting](#-known-issues--troubleshooting)
 * [Next Steps](#-next-steps)
 * [References](#-references)
 
