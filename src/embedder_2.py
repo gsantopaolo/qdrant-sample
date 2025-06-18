@@ -149,14 +149,10 @@ def main(pdf_path: str, collection: str):
     text = extract_text_from_pdf(pdf_path)
 
 
-    start_chunking = time.perf_counter()
+    start = time.perf_counter()
     chunks = chunk_text(text)
-    end_chunking = time.perf_counter()
-    total_chunking = end_chunking - start_chunking
-    # Split into whole seconds and leftover milliseconds
-    seconds = int(total_chunking)  # whole seconds
-    milliseconds = (total_chunking - seconds) * 1000  # fractional ms
-    logger.info(f"⏱️ total chunking time: {seconds}s {milliseconds:.3f}ms")
+    end = time.perf_counter()
+    logger.info(f"⏱️ total chunking time: {end-start:.3f} (s.ms)")
 
     metadata = [{"source": str(pdf_path), "chunk_index": idx} for idx in range(len(chunks))]
 
@@ -194,32 +190,25 @@ def main(pdf_path: str, collection: str):
 
     # only needed for performance count
     embedding_model = TextEmbedding(model_name=custom_model_name)
-    start_embed = time.perf_counter()
+    start = time.perf_counter()
     embeddings = list(embedding_model.embed(chunks))
-    end_embed = time.perf_counter()
-    total_embed = end_embed - start_embed
-    # Split into whole seconds and leftover milliseconds
-    seconds = int(total_embed)  # whole seconds
-    milliseconds = (total_embed - seconds) * 1000  # fractional ms
-    logger.info(f"⏱️ total embedding time using fastembed: {seconds}s {milliseconds:.3f}ms")
+    end = time.perf_counter()
+    logger.info(f"⏱️ total embedding time using fastembed: {end-start:.3f} (s.ms)")
 
-    start_embed = time.perf_counter()
+    start = time.perf_counter()
     embeddings = embed_with_hf(chunks, hf_model)
-    end_embed = time.perf_counter()
-    logger.info(f"⏱️ total embedding time using HF: {end_embed - start_embed:.3f}s")
+    end = time.perf_counter()
+    logger.info(f"⏱️ total embedding time using HF: {end - start:.3f} (s.ms)")
     # end only needed for performance count
 
-    start_store_chunks = time.perf_counter()
+    start = time.perf_counter()
     store_chunks(chunks, collection, client, metadata)
-    end_store_chunks = time.perf_counter()
-    total_store_chunks = end_store_chunks - start_store_chunks
-    seconds = int(total_store_chunks)  # whole seconds
-    milliseconds = (total_store_chunks - seconds) * 1000  # fractional ms
-    logger.info(f"⏱️ total time to store and embedd on qdrant via fastembed: {seconds}s {milliseconds:.3f}ms")
+    end = time.perf_counter()
+    logger.info(f"⏱️ total time to store and embedd on qdrant via fastembed: {end-start:.3f} (s.ms)")
 
     # lists all the available embedding models for fatembedd
     # logger.info(TextEmbedding.list_supported_models())
-# CLI wrapper
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Embed PDF text into Qdrant using FastEmbed"

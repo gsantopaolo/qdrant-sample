@@ -6,3 +6,6 @@ fastembed>=0.1.0
 qdrant-client>=1.9.0
 sentence-transformers>=2.2.2
 transformers[torch]
+# monitor performace on a mac use nvitop on linux/windows when equiped with a GPU
+# https://genmind.ch/posts/enhance-your-ai-engineer-toolbelt-with-asitop-and-nvitop/
+asitop
