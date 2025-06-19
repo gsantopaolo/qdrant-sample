@@ -144,4 +144,4 @@ FastEmbed’s ONNX backend typically outperforms both Sentence-Transformers (PyT
 [1]: https://github.com/qdrant/fastembed?utm_source=genmind.ch "qdrant/fastembed: Fast, Accurate, Lightweight Python library to make ..."
 [2]: https://qdrant.tech/articles/fastembed/?utm_source=genmind.ch "FastEmbed: Qdrant's Efficient Python Library for Embedding ..."
 [3]: https://qdrant.tech/documentation/embeddings/?utm_source=genmind.ch "Embeddings - Qdrant"
-[4]: https://genmind.ch"GenMind - Blog"
+[4]: https://genmind.ch "GenMind - Blog"
