@@ -84,29 +84,23 @@ mv .env.example .env
 
 ## 🎬 Quick Start
 
-### 1. Benchmark embedding speed
+### 1. Benchmark embedding Qdrant vs SentenceTransformers
 
 ```bash
-python src/embedder_perf.py \
-  --pdf_path ./docs/your_file.pdf \
-  --model_ht fe_onnx,st_bert \
-  --batch_size 16
+python embedder_perf.py --pdf_path ../docs/your_file.pdf
+  
 ```
 
 ### 2. Ingest with FastEmbed
 
 ```bash
-python src/embedder_fe.py \
-  --pdf_path ./docs/your_file.pdf \
-  --collection my_docs_fe
+python embedder_fe.py --pdf_path ../docs/your_file.pdf --collection my_docs_fe
 ```
 
 ### 3. Ingest with Sentence-Transformers
 
 ```bash
-python src/embedder_hf.py \
-  --pdf_path ./docs/your_file.pdf \
-  --collection my_docs_hf
+python embedder_hf.py --pdf_path ./docs/your_file.pdf --collection my_docs_hf
 ```
 
 > Both ingest scripts print detailed timing for chunking, embedding, and upsert operations.
@@ -114,7 +108,7 @@ python src/embedder_hf.py \
 ### 4. Query your data
 
 ```bash
-python src/query.py \
+python query.py \
   --collection my_docs_fe \
   --question "What problems does the paper address?"
 ```
@@ -133,8 +127,6 @@ python src/query.py \
 4. **Upsert** – `QdrantClient.add()` streams vectors and metadata into your specified collection.
 5. **Persistence** – metadata and chunk info optionally saved in YugabyteDB for relational queries.
 6. **Query** – `query.py` embeds natural-language queries and performs nearest-neighbor search.
-
-FastEmbed’s ONNX backend typically outperforms both Sentence-Transformers (PyTorch) and OpenAI Ada-002, with zero inference fees once the model is local.
 
 ---
 
