@@ -76,8 +76,10 @@ def main(pdf_path: str):
     logger.info("️\n")
     logger.info("️👉 start embedding using fastembed")
     embedding_model = TextEmbedding(model_name=custom_model_name)
+    start = time.perf_counter()
     embeddings = list(embedding_model.embed(chunks))
-
+    end = time.perf_counter()
+    logger.info(f"👉👉👉 ⏱️ total embedding time with fastembed: {end - start:.3f} (s.ms)")
     logger.info("️\n")
     logger.info("️👉 start embedding using HF SentenceTransformers")
     embeddings = embed_with_hf(chunks)

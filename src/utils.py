@@ -164,7 +164,8 @@ def store_embeddings(embeddings: np.ndarray, metadata: List[Dict], collection: s
     # client.set_model(embedding_model_name=custom_model_name, cache_dir=str(CACHE_ROOT))
 
     recreate_collection_for_hf(client, collection)
-    logger.info(f"🛢️ inserting into '{collection}'")
+    start = time.perf_counter()
+
     # 2) Build PointStructs
     points = [
         models.PointStruct(
@@ -175,8 +176,11 @@ def store_embeddings(embeddings: np.ndarray, metadata: List[Dict], collection: s
         for i in range(len(embeddings))
     ]
 
+    logger.info(f"🛢️ inserting {len(points)} entities into '{collection}'")
     # 3) Upsert all points at once
     client.upsert(collection_name=collection, points=points)
+    end = time.perf_counter()
+    logger.info(f"👉👉👉 ⏱️ total time to store in qdrant: {end - start:.3f} (s.ms)")
     logger.info(f"✅ inserted {len(points)} embeddings into '{collection}'")
 
     # start = time.perf_counter()
