@@ -55,17 +55,31 @@ Everything is organized into concise Python scripts so you can copy-paste logic 
 git clone https://github.com/gsantopaolo/qdrant-sample.git
 cd qdrant-sample
 
-# 2. Create a Conda environment
-conda create -n qdrant-sample python=3.11 -y
+# 2. create the data and all subfolders folder
+mkdir -p data/docs
+mkdir -p data/models
+mkdir -p data/qdrant
+mkdir -p data/yugabytedb
+
+# 3. Create a Conda environment
+conda create -n qdrant-sample python=3.11.7 -y
 conda activate qdrant-sample
+# if you are running linux or windows you shall 
+# use fastembed gpu, edit the requirements.txt 
 pip install -r requirements.txt
 
-# 3. Launch Qdrant and YugabyteDB via Docker Compose
+# 4. Launch Qdrant and YugabyteDB via Docker Compose
 docker compose -f deployment/docker-compose.yaml up -d
+
+# 5. rename .env.example to .env
+mv .env.example .env
 ```
 
-> **Tip**: The first run will download embedding models (\~100 MB) into `LOCAL_MODEL_PATH`.
+> **Tip**: The first run will download embedding models (a few GB) into `LOCAL_MODEL_PATH` (.env).
 
+> **Tip**: You might want to experiment with different embedding models, you can cinfigure it in .env 
+> If you want to comare SentenceTransformers and fastembed you shall choose the same model for both
+> QDRANT_EMBEDDING_MODEL and HF_EMBEDDING_MODEL inside .env
 ---
 
 ## 🎬 Quick Start
